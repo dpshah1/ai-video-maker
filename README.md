@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# PDF to Video Content Generator
 
-## Getting Started
+A Next.js application that uses Google Gemini API and OpenAI to convert PDF documents into engaging educational videos with voice over in the style of 3Blue1Brown.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Upload multiple PDF files
+- Extract text content from PDFs
+- Process content with Google Gemini AI
+- Generate educational video scripts and content
+- Generate Manim animations from scripts
+- Generate AI voice overs using OpenAI TTS
+- Combine video and audio into final educational videos
+- Clean, modern UI with real-time processing status
+
+## Setup
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Set up APIs:**
+   - **Google Gemini API:** Go to [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - **OpenAI API:** Go to [OpenAI Platform](https://platform.openai.com/api-keys)
+   - Create a `.env.local` file in the root directory:
+   ```
+   GEMINI_API_KEY=your_gemini_api_key_here
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
+
+3. **Install FFmpeg (required for video processing):**
+   ```bash
+   ./setup-ffmpeg.sh
+   ```
+
+4. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+
+5. **Open your browser:**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## How it Works
+
+1. **Upload PDFs:** Users can select and upload multiple PDF files
+2. **Text Extraction:** The app extracts text content from each PDF
+3. **AI Processing:** Google Gemini analyzes the content and generates educational video scripts
+4. **Voice Over Generation:** OpenAI TTS creates professional voice overs from the scripts
+5. **Animation Generation:** OpenAI GPT-4 generates Manim Python code for animations
+6. **Video Rendering:** Manim renders the animations into video files
+7. **Video Combination:** FFmpeg combines the video with voice over audio
+8. **Final Output:** Complete educational videos with synchronized audio and visuals
+
+## API Endpoints
+
+- `POST /api/process-pdf` - Processes uploaded PDFs with Gemini API
+- `POST /api/generate-voiceover` - Generates voice over audio using OpenAI TTS
+- `POST /api/generate-manim` - Generates Manim animation code using OpenAI GPT-4
+- `POST /api/render-manim` - Renders Manim code into video files
+- `POST /api/combine-video` - Combines video and audio using FFmpeg
+- `GET /api/voiceover/[sessionId]` - Serves generated voice over files
+- `GET /api/video/[sessionId]` - Serves rendered video files
+- `GET /api/combined-video/[sessionId]` - Serves final combined videos
+
+## Technologies Used
+
+- Next.js 15
+- Google Generative AI SDK
+- OpenAI API (GPT-4 and TTS)
+- Manim (Mathematical Animation Engine)
+- FFmpeg (Video Processing)
+- PDF parsing with pdf-parse
+- Tailwind CSS for styling
+- React 19
+
+## Environment Variables
+
+- `GEMINI_API_KEY` - Your Google Gemini API key
+- `OPENAI_API_KEY` - Your OpenAI API key (for GPT-4 and TTS)
+
+## File Structure
+
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+src/
+├── app/
+│   ├── api/
+│   │   ├── process-pdf/
+│   │   │   └── route.js
+│   │   ├── generate-voiceover/
+│   │   │   └── route.js
+│   │   ├── generate-manim/
+│   │   │   └── route.js
+│   │   ├── render-manim/
+│   │   │   └── route.js
+│   │   ├── combine-video/
+│   │   │   └── route.js
+│   │   ├── voiceover/[sessionId]/
+│   │   │   └── route.js
+│   │   ├── video/[sessionId]/
+│   │   │   └── route.js
+│   │   └── combined-video/[sessionId]/
+│   │       └── route.js
+│   ├── layout.js
+│   └── page.js
+├── setup-ffmpeg.sh
+└── ...
+```
